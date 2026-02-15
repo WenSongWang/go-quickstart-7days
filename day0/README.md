@@ -133,7 +133,7 @@
 | **sync** | `WaitGroup`、Mutex | 等多协程结束用 WaitGroup；多协程抢同一资源时用 Mutex（本系列 Day 1 会用到 WaitGroup）。 |
 | **net/http** | 服务、路由、Request/Response | 用 Go 写网站、写接口就靠这个包，不用装别的框架也能写“按 URL 区分接口”的 API。 |
 | **encoding/json** | Marshal、Unmarshal | 把结构体变成 JSON 字符串，或把 JSON 字符串变回结构体。和前端、别的服务交换数据时常用。 |
-| **database/sql** | 连接、Query、Exec | 通用数据库接口，配不同驱动（如 pq、sqlite3）连不同数据库。 |
+| **database/sql** | 连接、Query、Exec | 通用数据库接口，配不同驱动（如 lib/pq 连 Postgres、modernc/sqlite 连 SQLite）连不同数据库。 |
 | **log/slog** | 结构化日志 | Go 1.21 起标准库自带，打出来的日志便于采集、检索，替代散乱的 `Printf`。 |
 | **os** | 环境变量、信号 | `Getenv` 读配置；监听 SIGINT/SIGTERM 做优雅关闭时会用到。 |
 | **time** | 睡眠、超时 | `time.Sleep`、`time.After` 常和 `select` 一起做超时。 |
@@ -148,7 +148,7 @@
 | **github.com/joho/godotenv** | 加载 .env | 把 `.env` 文件里的键值对加载进环境变量，本地开发不用在系统里配一堆 env。Day 3。 |
 | **github.com/spf13/viper** | 多源配置 | 支持环境变量、配置文件、默认值等，类型解析、贴近生产配置方式。Day 3。 |
 | **github.com/lib/pq** | PostgreSQL 驱动 | 实现 `database/sql` 的接口，连 Postgres 用。Day 4。 |
-| **github.com/mattn/go-sqlite3** | SQLite 驱动 | 连 SQLite 用，Day 4 可选、无需装数据库。 |
+| **modernc.org/sqlite** | SQLite 驱动（纯 Go） | 连 SQLite 用，Day 4 使用；无需 CGo/gcc，直接可跑。 |
 | **github.com/jmoiron/sqlx** | 数据库扩展 | 在 database/sql 上包一层，Get/Select 直接扫到结构体、NamedExec，少写 Scan。Day 4。 |
 | **github.com/stretchr/testify** | 测试断言 | assert、require，表驱动测试里断言更清晰。Day 6。 |
 | **github.com/gin-gonic/gin** | HTTP 框架 | 路由、中间件、贴近上线项目写法。Day 7 综合实战。 |
