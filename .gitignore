@@ -1,0 +1,24 @@
+# 依赖与构建
+/vendor/
+
+# 二进制与临时文件
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+/tmp/
+*.log
+
+# IDE 与系统
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# 各 day 目录下配套 CSDN 博客（仅本地使用，不提交到 GitHub）
+day*/csdn.md

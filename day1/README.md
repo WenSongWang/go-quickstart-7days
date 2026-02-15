@@ -33,6 +33,12 @@ go run ./day1/concurrency
 
 建议按顺序跑：hello → basics → errors → concurrency。
 
+## 本日注意点与易踩坑
+
+- **错误包装**：要用 `%w`才能被 `errors.Is`/`As` 识别；返回「没有结果」用指针 `*T`，出错时返回 `nil`。
+- **并发**：闭包捕获循环变量时要把 `i` 传参进 goroutine；select 用 `ready` 等名字避免和 `wg.Done()` 混淆；多个 goroutine 打印顺序不固定是正常的。
+- 更多见：[docs/PITFALLS_AND_SOLUTIONS.md](../docs/PITFALLS_AND_SOLUTIONS.md)（语言与标准库、错误处理）。
+
 ## 学习建议
 
 - 先跑通再改：改变量名、返回值或错误信息，再 `go run` 看效果。

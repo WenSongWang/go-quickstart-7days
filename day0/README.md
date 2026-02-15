@@ -12,11 +12,11 @@
 | :--- | :--- | :--- |
 | **Day1** | Go 基础 | **fmt**、Println/Printf、main、nil、变量、函数、结构体、error、errors.Is/As、make、defer、range、goroutine、channel、WaitGroup、select、context |
 | **Day2** | HTTP 服务 | net/http、ListenAndServe、HandleFunc、Request、ResponseWriter、JSON、Marshal/Unmarshal |
-| **Day3** | 项目与配置 | cmd、internal、config、环境变量、os.Getenv、.env、godotenv |
-| **Day4** | 数据层 | database/sql、连接池、Query/Exec、预编译、SQLite、PostgreSQL |
+| **Day3** | 项目与配置 | cmd、internal、config、环境变量、os.Getenv、.env、godotenv、**viper**（多源配置） |
+| **Day4** | 数据层 | database/sql、连接池、Query/Exec、预编译、SQLite、PostgreSQL、**sqlx**（结构体映射） |
 | **Day5** | 中间件与分层 | 中间件、Handler 包装、鉴权、API Key、context 超时、handler→service→repository |
-| **Day6** | 测试与部署 | go test、表驱动测试、httptest、Dockerfile、多阶段构建 |
-| **Day7** | 综合实战 | REST API、slog、优雅关闭、Shutdown、健康检查 |
+| **Day6** | 测试与部署 | go test、表驱动测试、httptest、**testify**（assert/require）、Dockerfile、多阶段构建 |
+| **Day7** | 综合实战 | **gin**、REST API、slog、优雅关闭、Shutdown、健康检查、可选 **validator**（请求体验证） |
 
 **说明**：每天的内容会依赖前面几天。Day 1 打语言基础，Day 2 用标准库写 HTTP，Day 3 学怎么组织目录和读配置，后面再叠数据库、中间件、测试和部署，Day 7 把前面串成一个完整小项目。
 
@@ -38,6 +38,7 @@
 | **nil** | 表示“空、没有”。很多类型没赋值时就是 nil。判断“有没有出错”就写 `if err != nil { ... }`（err 不是 nil 就说明出错了）。 |
 | **var / :=** | 声明变量。`var x int = 1` 显式类型，`x := 1` 由右边自动推断类型，写起来更短。 |
 | **func** | 定义函数。Go 里函数可以返回多个值，通常最后一个会是 `error`，调用方要判断 `if err != nil`。 |
+| **返回指针 *T** | 很多函数返回 `*User` 而不是 `User`：**出错时没有结果，只能返回 nil，只有指针才能表示“没有”**；调用方先判 err 再用返回值，避免用到 nil。Day 1 的 FindUser 就是返回 `(*User, error)`。 |
 | **struct / type** | `type 名字 struct { 字段 类型 }` 定义“一种数据类型”，把几条信息打包在一起。比如“用户”可以包成：ID + 名字，后面当做一个整体用。 |
 
 ### 2.2 错误
@@ -114,6 +115,7 @@
 | 导入 | `import "fmt"` 或 `import ( "a" "b" )` | 引入后可用该包里的公开函数、类型。括号写法一次导入多个包。 |
 | 变量 | `var x int = 1` 或 `x := 1` | 前者显式类型，后者自动推断。函数内常用 `:=`，包级变量常用 `var`。 |
 | 函数 | `func 名(参数) 返回值 { }`，多返回值 `(int, error)` | Go 习惯把错误作为最后一个返回值，调用处必须检查 `err != nil`，否则容易漏错。 |
+| **返回指针** | 返回 `*User` 而不是 `User` | **出错时只能返回 nil，只有指针能表示“没有”**；先判 err 再使用返回值。 |
 | 结构体 | `type User struct { ID int; Name string }` | 把一组字段绑成一种类型，用来表示请求体、响应、数据库一行等。 |
 | 错误处理 | `if err != nil { return err }`、`fmt.Errorf("xxx: %w", err)` | 几乎每个返回 error 的函数都要处理；包装时用 `%w` 才能被 `errors.Is`/`As` 识别。 |
 | 并发 | `go f()`、`ch := make(chan int)`、`select { case <-ch: }` | `go` 让函数在后台跑；channel 在多个“后台任务”之间传数据；`select` 可以“等好几个 channel，谁先到就处理谁”。 |
@@ -143,9 +145,14 @@
 
 | 包 | 用途 | 解释 |
 | :--- | :--- | :--- |
-| **github.com/joho/godotenv** | 加载 .env | 把 `.env` 文件里的键值对加载进环境变量，本地开发不用在系统里配一堆 env。 |
-| **github.com/lib/pq** | PostgreSQL 驱动 | 实现 `database/sql` 的接口，连 Postgres 时必须 `import _ "github.com/lib/pq"` 注册驱动。 |
-| **github.com/mattn/go-sqlite3** | SQLite 驱动 | 同上，连 SQLite 用，本系列 Day 4 可选 SQLite 无需装数据库。 |
+| **github.com/joho/godotenv** | 加载 .env | 把 `.env` 文件里的键值对加载进环境变量，本地开发不用在系统里配一堆 env。Day 3。 |
+| **github.com/spf13/viper** | 多源配置 | 支持环境变量、配置文件、默认值等，类型解析、贴近生产配置方式。Day 3。 |
+| **github.com/lib/pq** | PostgreSQL 驱动 | 实现 `database/sql` 的接口，连 Postgres 用。Day 4。 |
+| **github.com/mattn/go-sqlite3** | SQLite 驱动 | 连 SQLite 用，Day 4 可选、无需装数据库。 |
+| **github.com/jmoiron/sqlx** | 数据库扩展 | 在 database/sql 上包一层，Get/Select 直接扫到结构体、NamedExec，少写 Scan。Day 4。 |
+| **github.com/stretchr/testify** | 测试断言 | assert、require，表驱动测试里断言更清晰。Day 6。 |
+| **github.com/gin-gonic/gin** | HTTP 框架 | 路由、中间件、贴近上线项目写法。Day 7 综合实战。 |
+| **github.com/go-playground/validator**（可选） | 请求体验证 | 与 gin 的 binding 搭配，校验请求体字段。Day 7 可选。 |
 
 ---
 
