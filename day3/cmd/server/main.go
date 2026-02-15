@@ -20,7 +20,7 @@ func main() {
 	_ = godotenv.Load("day3/config/.env") // _ = godotenv.Load("day3/config/.env") 是忽略返回值的赋值，因为godotenv.Load("day3/config/.env")返回值为error，所以用_忽略
 
 	// 从环境变量读进配置结构体（端口、环境名等）
-	cfg := config.Load()
+	cfg := config.Load()//这里是调用的config.go里的Load函数
 	log.Printf("启动服务 env=%s port=%d", cfg.AppEnv, cfg.HTTPPort)
 
 	// 注册 /health：返回 JSON 表示服务正常（健康检查）

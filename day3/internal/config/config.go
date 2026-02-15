@@ -47,10 +47,10 @@ func LoadWithOS() *Config {
 		DBDSN:    getEnv("DB_DSN", ""),//getEnv是getenv的函数，用于获取环境变量,比如DB_DSN映射到DBDSN
 	}
 }
-
+// getEnv是getenv的函数，用于获取环境变量,比如HTTP_PORT映射到HTTPPort	
 func getEnv(key, defaultVal string) string {
-	if v := os.Getenv(key); v != "" {//getenv是getenv的函数，用于获取环境变量,比如HTTP_PORT映射到HTTPPort
+	if v := os.Getenv(key); v != "" {
 		return v
 	}
-	return defaultVal
+	return defaultVal//如果环境变量不存在，则返回默认值
 }
