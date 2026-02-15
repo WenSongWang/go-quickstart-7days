@@ -2,6 +2,7 @@
 /vendor/
 
 # 二进制与临时文件
+*.db
 *.exe
 *.exe~
 *.dll

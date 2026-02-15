@@ -156,10 +156,22 @@
 
 ---
 
-## 六、建议（怎么用这份文档）
+## 六、Go 模块与 import 路径（新手易懵）
+
+看到 Day 3 等代码里 `import "github.com/go-quickstart-7days/day3/internal/config"` 时，很多人会以为「从 GitHub 在线加载」——**不是**。
+
+| 你看到的 | 实际含义 |
+| :--- | :--- |
+| **import "github.com/go-quickstart-7days/..."** | 这是**本项目**的包。根目录 go.mod 里写了 `module github.com/go-quickstart-7days`，所以本项目里任何包的路径都是「这个前缀 + 目录」。Go 会从**你本地的项目目录**解析，**不会**去 GitHub 拉代码。 |
+| **import "github.com/joho/godotenv"** | 这是**第三方**依赖，由 `go mod tidy` 下载到本机缓存；编译、运行时用的也是**本地缓存**，不是每次从 GitHub 拉。 |
+
+**一句话**：`github.com/...` 是 Go 的**包路径命名方式**（常和仓库地址一致），和「代码从哪加载」是两回事；本地开发时都是**本地解析或本地缓存**。
+
+---
+
+## 七、建议（怎么用这份文档）
 
 1. **先从头到尾扫一遍**，不用背。目标是：看到某个词时，能想起来“在 Day 0 哪一节见过、大概是干啥的”。
 2. **看 Day 1 代码时**：打开 `day1/hello/main.go`，遇到 `package`、`import`、`fmt`、`Println` 就回本页「二、关键词」或「三、语法」「四、常用包」查一下，一行一行对上号。
-3. **后面某天卡住**：直接回本页，用 Ctrl+F 搜那个词（如 `context`、`Marshal`），找到对应解释再看一遍。
-
-**不用一次全懂**，有个印象、知道“去哪查”就够。看完就可以开始 [Day 1：Go 基础](../day1/README.md) 了。
+3. **后面某天卡住**：直接回本页，用 Ctrl+F 搜那个词（如 `context`、`Marshal`）；若对 import 路径有疑惑，看上面「六、Go 模块与 import 路径」。
+4. **不用一次全懂**，有个印象、知道“去哪查”就够。看完就可以开始 [Day 1：Go 基础](../day1/README.md) 了。

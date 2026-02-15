@@ -31,6 +31,8 @@
 
 - **Go 1.21+**（代码按 Go 1.21 编写，1.21.x / 1.22.x 均可，如 `go1.21.12`）
 - （可选）Docker，用于 Day 6/7
+- **国内用户**：若 `go mod tidy` 连不上官方代理（报 connectex 超时），可执行 `go env -w GOPROXY=https://goproxy.cn,direct` 后重试；详见 [docs/PITFALLS_AND_SOLUTIONS.md](docs/PITFALLS_AND_SOLUTIONS.md)「环境与依赖」。
+- **import 写 `github.com/go-quickstart-7days/...` 是本地包路径**，不是从 GitHub 在线拉代码；说明见 [Day 0 六、Go 模块与 import 路径](day0/README.md#六go-模块与-import-路径新手易懵)，以及根目录 [go.mod](go.mod) 顶部注释。
 
 ## 快速开始
 
@@ -39,7 +41,7 @@
 git clone https://github.com/WenSongWang/go-quickstart-7days.git
 cd go-quickstart-7days
 
-# 拉取依赖
+# 拉取依赖（国内若超时见上方「环境要求」）
 go mod tidy
 
 # 按天运行示例（示例）
@@ -52,8 +54,8 @@ go run ./day7/app
 
 ```
 .
-├── README.md
-├── go.mod
+├── README.md                  # 项目说明与两大目录、学习路线
+├── go.mod                     # Go 模块定义与依赖声明
 ├── docs/
 │   ├── CURRICULUM.md           # 课程规划、两大目录、方案 A/B、可加技术点
 │   ├── INTERVIEW_TOPICS.md     # 中级/面试技术点覆盖说明（必读）
