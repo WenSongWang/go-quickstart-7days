@@ -45,4 +45,5 @@ go run ./day5/cmd/server
 - **写响应前别重复 WriteHeader**：在中间件里若已 `w.WriteHeader(401)` 并 `return`，就不要再调用 `next.ServeHTTP`；业务里也不要再改状态码。
 - **超时与 context**：Timeout 中间件把 `r.WithContext(ctx)` 传给下一层，业务或 service 里应用 `r.Context()` 做 DB/RPC 调用，以便超时能取消下游。
 - **API Key**：示例中 `"secret"` 写死在代码里，仅为演示；上线应从配置或环境变量读取。
+- **延伸阅读**：[接口鉴权综述：签名、AK/SK、加解密与常见方式](https://blog.csdn.net/weixin_40959890/article/details/157911873)（CSDN，含 Python 示例）。
 - 更多见 [docs/PITFALLS_AND_SOLUTIONS.md](../docs/PITFALLS_AND_SOLUTIONS.md)。
