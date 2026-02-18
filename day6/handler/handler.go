@@ -25,11 +25,11 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 	id, err := strconv.Atoi(path)
 	if err != nil || id <= 0 {
 		w.Header().Set("Content-Type", "application/json")
-		w.WriteHeader(http.StatusBadRequest)
-		json.NewEncoder(w).Encode(map[string]string{"error": "invalid id"})
+		w.WriteHeader(http.StatusBadRequest)//StatusBadRequest: 400
+		json.NewEncoder(w).Encode(map[string]string{"error": "invalid id"})//NewEncoder: 创建一个编码器，将map[string]string编码为JSON
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	json.NewEncoder(w).Encode(User{ID: id, Name: "用户" + strconv.Itoa(id)})
+	w.WriteHeader(http.StatusOK)//StatusOK: 200
+	json.NewEncoder(w).Encode(User{ID: id, Name: "用户" + strconv.Itoa(id)})//NewEncoder: 创建一个编码器，将User编码为JSON
 }

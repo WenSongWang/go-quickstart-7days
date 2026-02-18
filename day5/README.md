@@ -3,7 +3,7 @@
 - **中间件**：包装 `http.Handler`，在「进业务前」统一做日志、鉴权、**请求超时（context）**。
 - **本日链式顺序**：请求 → 日志 →（/api 下）超时 → 鉴权 → 业务 Handler。
 - **简单鉴权**：从 Header 取 `X-API-Key`，与配置比对；未通过返回 401。示例里写死 `"secret"`，**生产环境应从配置（如 Day 3 的 cfg）读取**。
-- **请求超时**：用 `context.WithTimeout` 给请求注入带超时的 context，下游用 `r.Context()` 可检测取消（面试常问）。
+- **请求超时**：用 `context.WithTimeout` 给请求注入带超时的 context，下游用 `r.Context()` 可检测取消（复习常考）。
 - **分层**：handler → service → repository（本日以 handler + 中间件为主，service/repository 在 Day 7 展开）。
 
 ## 目录结构

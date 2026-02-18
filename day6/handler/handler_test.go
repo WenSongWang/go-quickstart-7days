@@ -2,7 +2,7 @@ package handler// package handler: 包名，用于组织代码，类似于Python
 
 import (
 	"net/http"
-	"net/http/httptest"//httptest: 测试HTTP服务器
+	"net/http/httptest" // 测试 HTTP Handler，不真正起服务
 	"testing"//testing: 测试框架
 )
 
@@ -20,7 +20,7 @@ func TestGetUser(t *testing.T) {
 	tests := []struct {//[]: 数组,多组输入
 		path       string // 请求路径
 		wantStatus int    // 期望的 HTTP 状态码，200表示成功，400表示请求错误
-	}{// 上面是生命一个结构体，下面是初始化一个结构体，包含多组path和wantStatus
+	}{// 上面是声明一个结构体，下面是初始化一个结构体，包含多组path和wantStatus
 		{"/api/users/1", http.StatusOK},//请求路径为/api/users/1，期望状态码为200
 		{"/api/users/42", http.StatusOK},//请求路径为/api/users/42，期望状态码为200
 		{"/api/users/0", http.StatusBadRequest},//请求路径为/api/users/0，期望状态码为400

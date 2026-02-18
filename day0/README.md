@@ -13,10 +13,10 @@
 | **Day1** | Go 基础 | **fmt**、Println/Printf、main、nil、变量、函数、结构体、error、errors.Is/As、make、defer、range、goroutine、channel、WaitGroup、select、context |
 | **Day2** | HTTP 服务 | net/http、ListenAndServe、HandleFunc、Request、ResponseWriter、JSON、Marshal/Unmarshal |
 | **Day3** | 项目与配置 | cmd、internal、config、环境变量、os.Getenv、.env、godotenv、**viper**（多源配置） |
-| **Day4** | 数据层 | database/sql、连接池、Query/Exec、预编译、SQLite、PostgreSQL、**sqlx**（结构体映射） |
+| **Day4** | 数据层 | database/sql、连接池、Query/Exec、预编译、SQLite、PostgreSQL |
 | **Day5** | 中间件与分层 | 中间件、Handler 包装、鉴权、API Key、context 超时、handler→service→repository |
-| **Day6** | 测试与部署 | go test、表驱动测试、httptest、**testify**（assert/require）、Dockerfile、多阶段构建 |
-| **Day7** | 综合实战 | **gin**、REST API、slog、优雅关闭、Shutdown、健康检查、可选 **validator**（请求体验证） |
+| **Day6** | 测试与部署 | go test、表驱动测试、httptest、Dockerfile、多阶段构建 |
+| **Day7** | 综合实战 | **net/http**、REST API、slog、优雅关闭、Shutdown、健康检查、内存 store、API Key |
 
 **说明**：每天的内容会依赖前面几天。Day 1 打语言基础，Day 2 用标准库写 HTTP，Day 3 学怎么组织目录和读配置，后面再叠数据库、中间件、测试和部署，Day 7 把前面串成一个完整小项目。
 
@@ -31,7 +31,7 @@
 | 关键词 | 解释 |
 | :--- | :--- |
 | **package** | 每个 .go 文件都属于一个包。可执行程序必须是 `package main`，别的包用来被 import。 |
-| **import** | 引入其他包，才能用里面的函数和类型，比如 `import "fmt"` 后用 `fmt.Println`。 |
+| **import** | 引入**其他包**后，才能用里面的函数和类型，比如 `import "fmt"` 后用 `fmt.Println`。**同一包内**（同一目录、同一 `package xxx`）的多个 .go 文件共享命名空间，可直接用彼此导出的名字，**无需 import**。 |
 | **fmt（包）** | Day 1 第一个示例就会用到，是 Go 自带的“打印”包。在终端里输出文字就靠它：`fmt.Println(...)` 打一行并换行；`fmt.Printf("格式", 参数)` 按“占位符”打（占位符就是先把位置占住，后面再填数，比如 `%d` 填数字、`%s` 填字符串）。 |
 | **Println / Printf** | 都在 `fmt` 包里。Println 简单打一行；Printf 可以按格式打，例如 `"用户: ID=%d Name=%s"` 里 %d、%s 会被后面的参数替换。 |
 | **main** | 可执行程序的入口函数必须叫 `main()`，且必须在 `package main` 里，否则 `go run` 不知道从哪执行。 |
@@ -48,7 +48,7 @@
 | **error** | Go 里不用“抛异常”，而是把错误当返回值。函数返回 `(结果, error)`，出错时 error 不是 nil，调用方要自己检查。 |
 | **errors.New** | 造一个错误值，比如“未找到”“参数不合法”，后面可以统一用这个名字判断。 |
 | **fmt.Errorf 与 %w** | 在已有错误外面再包一层说明，如“查询用户时出错：xxx”。用 `%w` 可以把里面的错误保留住，后面还能用 `errors.Is` / `errors.As` 认出是哪种错。 |
-| **errors.Is / errors.As** | `errors.Is(err, 目标)` 判断“是不是某个已知错误”；`errors.As(err, &变量)` 把错误转成更具体的类型，方便取里面的字段（比如哪个字段校验没过）。面试常问。 |
+| **errors.Is / errors.As** | `errors.Is(err, 目标)` 判断“是不是某个已知错误”；`errors.As(err, &变量)` 把错误转成更具体的类型，方便取里面的字段（比如哪个字段校验没过）。复习时常考。 |
 
 ### 2.3 并发
 
@@ -62,7 +62,7 @@
 | **channel** | 用来在多个 goroutine 之间“传数据”。`ch <- 1` 表示往 ch 里发一个 1，`<-ch` 表示从 ch 里收一个数。可以带缓冲（先存几个再收），用完了可以 `close`。 |
 | **sync.WaitGroup** | 要等“多个 goroutine 都干完”再往下走时用：`Add(1)`、`Done()`、`Wait()`，避免 main 提前退出。 |
 | **select** | 在多个 channel 上“等谁先到”，常和 `time.After` 一起做超时：等业务结果或等超时，谁先到执行谁。 |
-| **context** | 在“整条请求链路”里传“取消/超时”的信号。比如设一个 3 秒超时，下游查数据库、调别人接口都能收到“时间到了别干了”。`context.Background()` 是起点；`WithTimeout` 设超时时间；`ctx.Done()`、`ctx.Err()` 用来判断是不是已经取消或超时了。面试高频。 |
+| **context** | 在“整条请求链路”里传“取消/超时”的信号。比如设一个 3 秒超时，下游查数据库、调别人接口都能收到“时间到了别干了”。`context.Background()` 是起点；`WithTimeout` 设超时时间；`ctx.Done()`、`ctx.Err()` 用来判断是不是已经取消或超时了。复习高频。 |
 
 ### 2.4 HTTP
 
@@ -149,10 +149,9 @@
 | **github.com/spf13/viper** | 多源配置 | 支持环境变量、配置文件、默认值等，类型解析、贴近生产配置方式。Day 3。 |
 | **github.com/lib/pq** | PostgreSQL 驱动 | 实现 `database/sql` 的接口，连 Postgres 用。Day 4。 |
 | **modernc.org/sqlite** | SQLite 驱动（纯 Go） | 连 SQLite 用，Day 4 使用；无需 CGo/gcc，直接可跑。 |
-| **github.com/jmoiron/sqlx** | 数据库扩展 | 在 database/sql 上包一层，Get/Select 直接扫到结构体、NamedExec，少写 Scan。Day 4。 |
-| **github.com/stretchr/testify** | 测试断言 | assert、require，表驱动测试里断言更清晰。Day 6。 |
-| **github.com/gin-gonic/gin** | HTTP 框架 | 路由、中间件、贴近上线项目写法。Day 7 综合实战。 |
-| **github.com/go-playground/validator**（可选） | 请求体验证 | 与 gin 的 binding 搭配，校验请求体字段。Day 7 可选。 |
+| **github.com/gin-gonic/gin** | HTTP 框架 | 路由、中间件、贴近上线项目写法。**part2** 两个项目使用；7 天用标准库 net/http。 |
+
+**说明**：sqlx（结构体映射）、testify（测试断言）、validator（请求体验证）本系列未用，属扩展可选；详见 [docs/INTERVIEW_TOPICS.md](../docs/INTERVIEW_TOPICS.md) 第十一节。
 
 ---
 

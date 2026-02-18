@@ -1,4 +1,4 @@
-// 请求超时中间件：为每个请求注入带超时的 context（面试常问：如何做请求超时）
+// 请求超时中间件：为每个请求注入带超时的 context（复习常考：如何做请求超时）
 package middleware
 
 import (

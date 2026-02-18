@@ -8,8 +8,8 @@
 | :--- | :--- |
 | 环境 | 安装 Go、`go run` / `go build` |
 | 语法 | 变量、函数、结构体、多返回值、`error` |
-| 错误处理 | `errors.Is` / `errors.As`、错误包装 `fmt.Errorf("%w", err)`（面试常问） |
-| 并发 | goroutine、channel、`sync.WaitGroup`、`select`、`context` 取消与超时（面试高频） |
+| 错误处理 | `errors.Is` / `errors.As`、错误包装 `fmt.Errorf("%w", err)`（复习常考） |
+| 并发 | goroutine、channel、`sync.WaitGroup`、`select`、`context` 取消与超时（复习高频） |
 
 ## 示例与知识点
 
@@ -42,4 +42,4 @@ go run ./day1/concurrency
 ## 学习建议
 
 - 先跑通再改：改变量名、返回值或错误信息，再 `go run` 看效果。
-- 重点看 `errors` 的错误链与 `concurrency` 的 context，面试常考。
+- 重点看 `errors` 的错误链与 `concurrency` 的 context，复习常考。

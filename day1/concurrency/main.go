@@ -1,4 +1,4 @@
-// Day1 示例：goroutine、channel、sync.WaitGroup、select、context（面试高频）
+// Day1 示例：goroutine、channel、sync.WaitGroup、select、context（复习高频）
 package main
 // 本文件学习：go	、make(chan)、defer、range、WaitGroup(wg)、select(ch)、context
 // go 启动一个后台任务(go func()),可以理解为轻量级线程，一个程序里能跑很多个

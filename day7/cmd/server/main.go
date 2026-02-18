@@ -1,4 +1,4 @@
-// Day7 综合示例：配置 + 中间件 + 内存存储 + 用户 API + 优雅关闭（面试常问）
+// Day7 综合示例：配置 + 中间件 + 内存存储 + 用户 API + 优雅关闭（复习常考）
 // 本文件学习：路由、中间件链、slog、Shutdown 优雅关闭、signal 监听
 package main
 
@@ -66,7 +66,7 @@ func main() {
 		}
 	}()
 
-	// 优雅关闭：收到 Ctrl+C 或 kill 后，等正在处理的请求完成再退出（面试常问）
+	// 优雅关闭：收到 Ctrl+C 或 kill 后，等正在处理的请求完成再退出（复习常考）
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 	<-quit // 阻塞直到收到信号

@@ -1,4 +1,4 @@
-// Day1 示例：错误包装、errors.Is / errors.As（面试常问）
+// Day1 示例：错误包装、errors.Is / errors.As（复习常考）
 // 本文件学习：定义“已知错误”、用 %w 包装、用 Is/As 判断错误类型
 package main
 

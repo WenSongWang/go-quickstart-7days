@@ -16,6 +16,7 @@
 # IDE 与系统
 .idea/
 .vscode/
+.cursor/
 *.swp
 *.swo
 .DS_Store

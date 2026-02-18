@@ -1,0 +1,7 @@
+docs & part2: 技术文档与进阶项目大更新
+
+- README: 增加 part2 说明与运行示例；课程规划与技术栈合并进 README，删除 docs/CURRICULUM.md
+- docs: 新增 INTERVIEW_TOPICS.md（技术点与自测要点，含频段速查、Mermaid 图、高/中/低频与扩展）；PITFALLS 增加博文链接与优雅关闭流程图
+- part2-projects: 新增 redis-jwt-api（gin + JWT + Redis 缓存 + 写后删 + 限流/validator）、transaction-pprof-api（gin + 事务 + 统一错误码 + pprof）；两项目 README 含深度说明与手册化内容
+- 全文替换「面试/简历」相关表述为「自我复习/自测」等委婉说法；INTERVIEW_TOPICS/PITFALLS 增加 CSDN 博文链接
+- 依赖: go.mod 增加 golang.org/x/time（part2 限流）；.gitignore 增加 .cursor/

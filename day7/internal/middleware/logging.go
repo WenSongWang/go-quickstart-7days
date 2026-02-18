@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-// Logging 用 slog 打结构化日志（Go 1.21+ 标准库，面试可提）
+// Logging 用 slog 打结构化日志（Go 1.21+ 标准库，复习可重点看）
 // 记录每个请求的 method、path、耗时（毫秒），便于排查和监控
 func Logging(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
